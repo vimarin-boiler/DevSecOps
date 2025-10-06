@@ -1,3 +1,2 @@
 # DevSecOps
-DevSecOps pipeline and demo
-vimarin.cl
+Repo de ejemplo para prácticas de DevSecOps en Java + Maven + Springboot
