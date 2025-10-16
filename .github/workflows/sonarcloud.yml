@@ -1,0 +1,41 @@
+name: Build + Test + SonarCloud
+
+on:
+  push:
+    branches: [ "main", "master", "develop", "releases/**" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-analyze:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write    # para comentarios/checks en PR
+      id-token: write         # recomendado por GitHub Actions
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Mejora la relevancia de la decoración de PRs
+          fetch-depth: 0  # recomendado por SonarSource
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build, test and SonarCloud analysis (Maven)
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B -ntp clean verify \
+            org.jacoco:jacoco-maven-plugin:report \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=${{ vars.SONAR_ORG }} \
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
