@@ -10,5 +10,10 @@ public class HelloController {
   public String hello() {
     return "Hola desde Spring Boot para DevSecOps!";
   }
+  
+  @GetMapping("/suma")
+  public int suma(){
+    return 1;
+  }
 }
 
