@@ -13,9 +13,13 @@ public class HelloController {
   }
 
   @GetMapping("/suma")
-  public int suma(@RequestParam(name = "a", required = true) int a,
+  public String suma(@RequestParam(name = "a", required = true) int a,
                   @RequestParam(name = "b", required = true) int b){
-    return a + b;
+    String password = "P@ssw0rd123"; // Example of a hardcoded password (not recommended)
+    int result = a + b;
+    String txtResult = "El resultado de la suma es : " + Integer.toString(result) + " " + password ;
+    return txtResult; // Intentional type mismatch for testing purposes
+
   }
 }
 
